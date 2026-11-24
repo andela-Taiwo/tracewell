@@ -1,26 +1,30 @@
 # Tracewell
 
-Case management for contact tracers during an epidemic: record a case, interview them, list
-the people they met, work out who counts as a contact and until when, and follow every
-contact up, while treating every patient's data as the sensitive health record it is.
+Case management for contact tracers during an epidemic, built on a bitemporal fact store.
+Tracers record cases, interviews and meetings; Tracewell works out who counts as a contact
+and until when, and keeps every answer explainable after the facts are corrected: what did we
+believe on day 7, and why?
 
 > **Status: foundation only.** The project layout, tooling, exposure and quarantine date
 > rules, redaction of personal details (backend) and a placeholder web app exist and are
-> tested. The data model, API, sign-in and roles, audit log, interview flow, follow-up queues,
-> clusters and retention are not built yet. See [the plan](docs/PLAN.md).
+> tested. The fact store, recompute engine, clusters, API, roles, audit, interview flow and
+> retention are not built yet. See [the plan](docs/PLAN.md).
 
 ## What it will do
 
-- **Cases**: intake from a positive test, symptom onset, and the infectious window worked out
-  from the outbreak's rules.
-- **Interviews**: a guided flow for listing places and people, with meetings inside the
-  infectious window turned into contacts automatically.
-- **Contacts**: quarantine end dates from the last exposure, daily follow-up calls assigned to
-  tracers, and contacts who become cases linked back to their source.
-- **People, once**: likely duplicates found and merged by a person, never automatically.
-- **Clusters**: cases linked through shared places or chains of contacts, shown as groups.
-- **Privacy**: tracers see only their own cases; every view of a record is audited; personal
-  details never reach logs or URLs; records are deleted after the retention period.
+- **Facts, never overwritten**: onset and test dates, meetings, people and places, each with
+  the time it was true and the time it was recorded. A correction is a new fact.
+- **The correction cascade**: correct one onset date and every result that depends on it is
+  recomputed: the infectious window, new contacts, quarantine dates, links and clusters.
+- **Replay**: open any case as it was known on any past day and see exactly what was believed
+  then, unchanged by later corrections.
+- **Evidence-weighted links and clusters**: every link carries its evidence and strength;
+  clusters grow and split as links are added and withdrawn; duplicate people are merged only
+  by a person, with undo.
+- **Tracing work**: interviews, daily follow-up calls, and contacts who become cases linked to
+  their source.
+- **Privacy**: tracers see only their own cases; every read is audited; personal details never
+  reach logs or URLs; records and their history are deleted when the retention period ends.
 
 All sample people and places are made up. Tracewell never ships real patient data.
 

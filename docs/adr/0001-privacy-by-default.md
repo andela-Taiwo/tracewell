@@ -21,8 +21,8 @@ of a project are usually incomplete, so they are set here, before any feature ex
   record is opened.
 - **Nothing personal in logs or URLs.** Identifiers in URLs are random IDs; a logging filter
   redacts phone numbers, emails and health service numbers anywhere they slip through.
-- **Delete on time.** Records are deleted when the outbreak's retention period ends, and the
-  deletion is reported.
+- **Delete on time.** Records and their history are deleted when the outbreak's retention
+  period ends, and the deletion is reported. See ADR 0002 for how this overrides replay.
 - **Made-up data only** in the repository, tests and demos.
 
 ## Consequences
